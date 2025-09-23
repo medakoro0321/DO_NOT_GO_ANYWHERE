@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
-  m_Name: hasKnife
+  m_Name: KnifeHit
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: 33d6706394f430548b2dcba85a948bb2,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: e41fb633563bf49439931c68e6acda8d,
     type: 2}
   udonAssembly: 
   assemblyError: 
-  sourceCsScript: {fileID: 11500000, guid: 9d1b2607bd4e58c4da1a44e3227f03ab, type: 3}
+  sourceCsScript: {fileID: 11500000, guid: eeed6715b76dd89499605bb1bdcd7273, type: 3}
   scriptVersion: 2
   compiledVersion: 2
   behaviourSyncMode: 0
   hasInteractEvent: 0
-  scriptID: 7738721721530799272
+  scriptID: 2771419743950250041
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 

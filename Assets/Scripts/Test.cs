@@ -20,11 +20,10 @@ public class Test : UdonSharpBehaviour
 
     void Update()
     {
-        //desktop用
-        //左クリック判定
+        //desktop用左クリック判定
         if (Input.GetMouseButtonDown(0) && isHeld)
         {
-            Debug.Log("Clicked!");
+            //todo : 攻撃アニメーション
         }
     }
 
@@ -34,7 +33,6 @@ public class Test : UdonSharpBehaviour
     public override void OnPickup()
     {
         isHeld = true;
-        Debug.Log(pickup.currentPlayer);
     }
 
     /// <summary>
@@ -43,7 +41,6 @@ public class Test : UdonSharpBehaviour
     public override void OnDrop()
     {
         isHeld = false;
-        Debug.Log("落としたよ");
     }
 
 }
