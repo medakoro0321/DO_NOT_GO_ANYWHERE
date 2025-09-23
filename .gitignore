@@ -1,0 +1,9 @@
+Packages/
+ClientSimStorage/
+Assets/UdonSharp/
+Assets/SerializedUdonPrograms/
+Library/
+Logs/
+Temp/
+Assets/XR/
+*.csproj
