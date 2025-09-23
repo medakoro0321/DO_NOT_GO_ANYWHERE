@@ -1,4 +1,6 @@
 ﻿
+using Mono.Cecil.Cil;
+using TMPro;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
@@ -24,6 +26,6 @@ public class Test : UdonSharpBehaviour
     {
         isHeld = false;
         Debug.Log("落としたよ");
-
     }
+
 }
