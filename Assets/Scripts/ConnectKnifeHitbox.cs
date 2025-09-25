@@ -12,6 +12,8 @@ public class ConnectKnifeHitbox : UdonSharpBehaviour
     private VRCPlayerApi attachedPlayer;
     private bool isAttached = false;
 
+    [Header("当たり判定")] public GameObject KnifeHitboxCollider;
+
     void Start()
     {
         gameObject.layer = hitboxLayer;
@@ -24,6 +26,20 @@ public class ConnectKnifeHitbox : UdonSharpBehaviour
     }
 
     void Update()
+    {
+        // 開始しているか
+        // debug
+        bool isStarted = true;
+        int JoinPlayerCount;
+        
+
+        if (isStarted)
+        {
+            PlayerConnectHitbox();
+        }
+    }
+
+    void PlayerConnectHitbox()
     {
         if (isAttached && attachedPlayer != null && attachedPlayer.IsValid())
         {
