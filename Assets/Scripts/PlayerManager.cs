@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
@@ -8,23 +7,33 @@ using VRC.Udon;
 public class PlayerManager : UdonSharpBehaviour
 {
     [Header("プレイヤー管理")]
-    public string[] playerNames;      // プレイヤー名を保存
-    public int[] playerIDs;          // プレイヤーIDを保存
-    public int playerCount = 0;      // 現在のプレイヤー数
+    public string[] playerNames;
+    public int[] playerIDs;
+    public VRCPlayerApi[] registeredPlayers;  // 追加：プレイヤー参照を保存
+    public int playerCount = 0;
 
-    [Header("Debug")] public String DebugInformation;
+    [Header("ゲーム状態")]
+    public bool[] playerAliveStatus;  // 追加：各プレイヤーの生存状態
+    public bool gameStarted = false;  // 追加：ゲーム開始フラグ
 
-    /// <summary>
-    /// スタートボタンが押されたとき
-    /// </summary>
+    [Header("当たり判定管理")]
+    public ConnectKnifeHitbox[] knifeHitbox;  // すべての当たり判定オブジェクト
+
+    [Header("デバッグ")]
+    public String debugText;
+
     public void PushStartButton()
     {
+        Debug.Log("スタートボタンが押されました");
+
         // 全プレイヤーの情報を取得
         VRCPlayerApi[] allPlayers = VRCPlayerApi.GetPlayers(new VRCPlayerApi[VRCPlayerApi.GetPlayerCount()]);
 
         // 配列のサイズを調整
         playerNames = new string[allPlayers.Length];
         playerIDs = new int[allPlayers.Length];
+        registeredPlayers = new VRCPlayerApi[allPlayers.Length];
+        playerAliveStatus = new bool[allPlayers.Length];
         playerCount = allPlayers.Length;
 
         // プレイヤー情報を配列に格納
@@ -34,85 +43,110 @@ public class PlayerManager : UdonSharpBehaviour
             {
                 playerNames[i] = allPlayers[i].displayName;
                 playerIDs[i] = allPlayers[i].playerId;
+                registeredPlayers[i] = allPlayers[i];
+                playerAliveStatus[i] = true;  // 全員生存状態で開始
             }
         }
 
-        // デバッグ表示
+        // ゲーム開始
+        gameStarted = true;
+
+        // すべての当たり判定を有効化
+        EnableAllHitboxes();
+
         UpdateDebugDisplay();
-
-        Debug.Log($"プレイヤー情報を取得しました。総数: {playerCount}");
+        Debug.Log($"ゲーム開始！プレイヤー数: {playerCount}");
     }
 
-    /// <summary>
-    ///  2番目のプレイヤーが配列に含まれているかチェック
-    /// </summary>
-    /// <returns>2番目のプレイヤーが配列に含まれている</returns>
-    public bool CheckSecondPlayerExists()
+    // すべての当たり判定オブジェクトを有効化
+    void EnableAllHitboxes()
     {
-        if (playerCount >= 2)
+        foreach (ConnectKnifeHitbox hitbox in knifeHitbox)
         {
-            VRCPlayerApi secondPlayer = VRCPlayerApi.GetPlayers(new VRCPlayerApi[VRCPlayerApi.GetPlayerCount()])[1];
-
-            if (secondPlayer != null && secondPlayer.IsValid())
+            if (hitbox != null)
             {
-                return IsPlayerInArray(secondPlayer.displayName, secondPlayer.playerId);
+                hitbox.SetPlayerManager(this);
+                hitbox.gameObject.SetActive(true);
             }
         }
-        return false;
     }
 
-    /// <summary>
-    /// プレイヤーが配列に含まれているかチェック（名前とIDで確認）
-    /// </summary>
-    /// <param name="playerName">String;プレイヤーの名前</param>
-    /// <param name="playerID">int;プレイヤーID</param>
-    /// <returns>分からん</returns>
-    public bool IsPlayerInArray(string playerName, int playerID)
+    // プレイヤーが死亡した時の処理
+    public void PlayerDied(VRCPlayerApi player)
     {
+        if (!gameStarted) return;
+
         for (int i = 0; i < playerCount; i++)
         {
-            if (playerNames[i] == playerName && playerIDs[i] == playerID)
+            if (registeredPlayers[i] == player)
             {
-                Debug.Log($"プレイヤー {playerName} (ID: {playerID}) が配列に見つかりました");
-                return true;
+                playerAliveStatus[i] = false;
+                Debug.Log($"プレイヤー {playerNames[i]} が死亡しました");
+                UpdateDebugDisplay();
+                CheckGameEnd();
+                return;
             }
         }
-        Debug.Log($"プレイヤー {playerName} (ID: {playerID}) は配列に見つかりませんでした");
+    }
+
+    // プレイヤーが生存しているかチェック
+    public bool IsPlayerAlive(VRCPlayerApi player)
+    {
+        if (!gameStarted) return false;
+
+        for (int i = 0; i < playerCount; i++)
+        {
+            if (registeredPlayers[i] == player)
+            {
+                return playerAliveStatus[i];
+            }
+        }
         return false;
     }
 
-    // 特定のプレイヤーが配列に含まれているかチェック
+    // ゲーム終了チェック
+    void CheckGameEnd()
+    {
+        int aliveCount = 0;
+        for (int i = 0; i < playerCount; i++)
+        {
+            if (playerAliveStatus[i]) aliveCount++;
+        }
+
+        if (aliveCount <= 1)
+        {
+            Debug.Log("ゲーム終了！");
+            gameStarted = false;
+            // ゲーム終了処理をここに追加
+        }
+    }
+
+    void UpdateDebugDisplay()
+    {
+        if (debugText != null)
+        {
+            string debugInfo = $"ゲーム状態: {(gameStarted ? "開始中" : "停止中")}\n";
+            debugInfo += $"登録プレイヤー数: {playerCount}\n";
+            for (int i = 0; i < playerCount; i++)
+            {
+                string status = playerAliveStatus[i] ? "生存" : "死亡";
+                debugInfo += $"{i + 1}. {playerNames[i]} ({status})\n";
+            }
+            debugText = debugInfo;
+        }
+    }
+
     public bool IsPlayerInArray(VRCPlayerApi player)
     {
         if (player == null || !player.IsValid()) return false;
 
-        return IsPlayerInArray(player.displayName, player.playerId);
-    }
-
-    // デバッグ表示更新
-    void UpdateDebugDisplay()
-    {
-        string debugInfo = $"登録プレイヤー数: {playerCount}\n";
         for (int i = 0; i < playerCount; i++)
         {
-            debugInfo += $"{i + 1}. {playerNames[i]} (ID: {playerIDs[i]})\n";
+            if (registeredPlayers[i] == player)
+            {
+                return true;
+            }
         }
-        DebugInformation = debugInfo;
-    }
-
-    // 新しいプレイヤーが入室した際の検知例
-    public override void OnPlayerJoined(VRCPlayerApi player)
-    {
-        Debug.Log($"新しいプレイヤーが入室: {player.displayName}");
-
-        // 既に配列に登録済みかチェック
-        if (IsPlayerInArray(player))
-        {
-            Debug.Log("このプレイヤーは既に登録されています");
-        }
-        else
-        {
-            Debug.Log("新規プレイヤーです");
-        }
+        return false;
     }
 }
