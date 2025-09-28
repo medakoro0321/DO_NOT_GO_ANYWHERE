@@ -10,6 +10,6 @@ public class isClickedTest : UdonSharpBehaviour
 
     public override void Interact()
     {
-        myself.GetComponent<PlayerManager>().PushStartButton();
+        myself.GetComponent<GameController>().StartGame();
     }
 }
