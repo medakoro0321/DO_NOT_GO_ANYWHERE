@@ -14,6 +14,7 @@ public class isKnifeAttack : UdonSharpBehaviour
     [Header("RespawnPointTransform")] public Transform RespawnPoint;
     private int DetectedPlayerCollider = 0;
     public VRC_Pickup pickup;
+    [Header("GameSystemScript") ] public GameSystem gameSystem;
 
     void Start()
     {
