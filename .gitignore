@@ -8,3 +8,4 @@ Logs/
 Temp/
 Assets/XR/
 *.csproj
+obj/
