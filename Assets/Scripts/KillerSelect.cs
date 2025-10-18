@@ -2,8 +2,6 @@
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
-using VRC.Udon;
-using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
 public class KillerSelect : UdonSharpBehaviour
@@ -14,8 +12,8 @@ public class KillerSelect : UdonSharpBehaviour
     [Header("デバッグ")]
     public bool showDebugLogs = true;
     
-    // トリガー内のプレイヤーリスト
-    private readonly List<VRCPlayerApi> _playersInTrigger = new();
+    // トリガー内のプレイヤーリスト（配列で管理）
+    private VRCPlayerApi[] _playersInTrigger = new VRCPlayerApi[0];
     // 選ばれた殺人鬼のリスト
     private VRCPlayerApi[] _selectedKillers;
     // 殺人鬼プレイヤーテレポート場所
@@ -25,8 +23,7 @@ public class KillerSelect : UdonSharpBehaviour
     void Start()
     {
         // 選択された殺人鬼を保存する配列を初期化
-        _selectedKillers = Array.Empty<VRCPlayerApi>();
-        
+        _selectedKillers = new VRCPlayerApi[0];
     }
     
     /// <summary>
@@ -37,12 +34,12 @@ public class KillerSelect : UdonSharpBehaviour
         if (player == null) return;
         
         // リストに追加（重複チェック）
-        if (_playersInTrigger.Contains(player)) return;
-        _playersInTrigger.Add(player);
+        if (ContainsPlayer(player)) return;
+        AddPlayer(player);
             
         if (showDebugLogs)
         {
-            Debug.Log($"[KillerSelector] プレイヤーが入場: {player.displayName} (合計: {_playersInTrigger.Count}人)");
+            Debug.Log($"[KillerSelector] プレイヤーが入場: {player.displayName} (合計: {_playersInTrigger.Length}人)");
         }
     }
     
@@ -54,13 +51,74 @@ public class KillerSelect : UdonSharpBehaviour
         if (player == null) return;
         
         // リストから削除
-        if (!_playersInTrigger.Contains(player)) return;
-        _playersInTrigger.Remove(player);
+        if (!ContainsPlayer(player)) return;
+        RemovePlayer(player);
             
         if (showDebugLogs)
         {
-            Debug.Log($"[KillerSelector] プレイヤーが退出: {player.displayName} (残り: {_playersInTrigger.Count}人)");
+            Debug.Log($"[KillerSelector] プレイヤーが退出: {player.displayName} (残り: {_playersInTrigger.Length}人)");
         }
+    }
+
+    /// <summary>
+    /// プレイヤーを配列に追加
+    /// </summary>
+    private void AddPlayer(VRCPlayerApi player)
+    {
+        VRCPlayerApi[] newArray = new VRCPlayerApi[_playersInTrigger.Length + 1];
+        for (int i = 0; i < _playersInTrigger.Length; i++)
+        {
+            newArray[i] = _playersInTrigger[i];
+        }
+        newArray[_playersInTrigger.Length] = player;
+        _playersInTrigger = newArray;
+    }
+    
+    /// <summary>
+    /// プレイヤーを配列から削除
+    /// </summary>
+    private void RemovePlayer(VRCPlayerApi player)
+    {
+        int index = -1;
+        for (int i = 0; i < _playersInTrigger.Length; i++)
+        {
+            if (_playersInTrigger[i] != null && _playersInTrigger[i].playerId == player.playerId)
+            {
+                index = i;
+                break;
+            }
+        }
+        
+        if (index == -1) return;
+        
+        VRCPlayerApi[] newArray = new VRCPlayerApi[_playersInTrigger.Length - 1];
+        int newIndex = 0;
+        for (int i = 0; i < _playersInTrigger.Length; i++)
+        {
+            if (i != index)
+            {
+                newArray[newIndex] = _playersInTrigger[i];
+                newIndex++;
+            }
+        }
+        _playersInTrigger = newArray;
+    }
+
+    /// <summary>
+    /// 重複チェック
+    /// </summary>
+    /// <returns>重複した場合、TRUE</returns>
+    private bool ContainsPlayer(VRCPlayerApi player)
+    {
+        foreach (var t in _playersInTrigger)
+        {
+            if (t != null && t.playerId == player.playerId)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
     
     /// <summary>
@@ -70,7 +128,7 @@ public class KillerSelect : UdonSharpBehaviour
     {
         CleanupPlayerList();
         
-        var playerCount = _playersInTrigger.Count;
+        var playerCount = _playersInTrigger.Length;
         
         if (playerCount == 0) // トリガー内にプレイヤーが居ない場合
         {
@@ -112,14 +170,25 @@ public class KillerSelect : UdonSharpBehaviour
     private VRCPlayerApi[] SelectRandomPlayers(int count)
     {
         var result = new VRCPlayerApi[count];
-        var tempList = new List<VRCPlayerApi>(_playersInTrigger);
+        var tempArray = new VRCPlayerApi[_playersInTrigger.Length];
+        
+        // 配列をコピー
+        for (int i = 0; i < _playersInTrigger.Length; i++)
+        {
+            tempArray[i] = _playersInTrigger[i];
+        }
+        
+        int remainingCount = tempArray.Length;
         
         for (var i = 0; i < count; i++)
         {
-            var randomIndex = Random.Range(0, tempList.Count);
-            result[i] = tempList[randomIndex];
+            var randomIndex = Random.Range(0, remainingCount);
+            result[i] = tempArray[randomIndex];
             PlayerTeleport(result[i]);
-            tempList.RemoveAt(randomIndex);
+            
+            // 選ばれたプレイヤーを配列の最後と入れ替えて、有効な範囲を減らす
+            tempArray[randomIndex] = tempArray[remainingCount - 1];
+            remainingCount--;
         }
         return result;
     }
@@ -129,14 +198,32 @@ public class KillerSelect : UdonSharpBehaviour
     /// </summary>
     private void CleanupPlayerList()
     {
-        for (int i = _playersInTrigger.Count - 1; i >= 0; i--)
+        int validCount = 0;
+        
+        // 有効なプレイヤーをカウント
+        foreach (var t in _playersInTrigger)
         {
-            // 退出済みもしくはプレイヤーオブジェクトが存在しない場合リストから削除
-            if (_playersInTrigger[i] == null || !_playersInTrigger[i].IsValid()) 
+            // 退出済みもしくはプレイヤーオブジェクトが存在しない場合はスキップ
+            if (t != null && t.IsValid()) 
             {
-                _playersInTrigger.RemoveAt(i);
+                validCount++;
             }
         }
+        
+        // 有効なプレイヤーだけを新しい配列に詰める
+        VRCPlayerApi[] newArray = new VRCPlayerApi[validCount];
+        int newIndex = 0;
+        
+        foreach (var t in _playersInTrigger)
+        {
+            if (t != null && t.IsValid())
+            {
+                newArray[newIndex] = t;
+                newIndex++;
+            }
+        }
+        
+        _playersInTrigger = newArray;
     }
     
     /// <summary>
@@ -147,7 +234,7 @@ public class KillerSelect : UdonSharpBehaviour
         player.TeleportTo(
             killerTpTransform.position,
             player.GetRotation()
-            );
+        );
     }
     
     /// <summary>
@@ -158,13 +245,17 @@ public class KillerSelect : UdonSharpBehaviour
         // TODO: 通知を送信
     }
     
-    // 選ばれた殺人鬼かどうかをチェック（外部から呼び出し可能）
+    /// <summary>
+    ///  選ばれた殺人鬼かどうかをチェック
+    /// </summary>
+    /// <returns>殺人鬼の場合、TRUE</returns>
     public bool IsKiller(VRCPlayerApi player)
     {
+        if (player == null) return false;
         
-        foreach (var killer in _selectedKillers)
+        foreach (var t in _selectedKillers)
         {
-            if (killer.playerId == player.playerId)
+            if (t != null && t.playerId == player.playerId)
             {
                 return true;
             }

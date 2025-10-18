@@ -26,15 +26,11 @@ public class isKnifeAttack : UdonSharpBehaviour
         var playerAPI = Networking.LocalPlayer;
         text.text = "Local Player: " + playerAPI.displayName;
         deadTextGUI.gameObject.SetActive(false);
+        
+        if (_killerSelect == null) Debug.LogError("_KillerSelectがアタッチされていないかNULLが返されました!");
 
     }
 
-    private void UpdateMethod(VRCPlayerApi player,VRCPlayerApi owner)
-    {
-        // Debug用
-        text.text = "Player Entered: " + player.displayName + "\nDetected Counter: " + _detectedPlayerCollider
-        + "\nKnifeOwner: " + owner.displayName;
-    }
     // 当たり判定 x2
     public override void OnPlayerTriggerEnter(VRCPlayerApi player)
     {
