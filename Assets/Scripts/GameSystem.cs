@@ -9,27 +9,14 @@ using VRC.Udon;
 
 public class GameSystem : UdonSharpBehaviour
 {
-    //Synced Variables
-    public VRCPlayerApi[] ItPlayers = Array.Empty<VRCPlayerApi>();
-    public  VRCPlayerApi[] NormalPlayers = Array.Empty<VRCPlayerApi>();
-    public VRCPlayerApi[] PlayersInTrigger = Array.Empty<VRCPlayerApi>();
-    [Header("Debug")]
-    public TextMeshProUGUI debugtext;
+    // 外部スクリプトを読み込み
+    private KillerSelect _killerSelect;
     
-    [UdonSynced] public bool isStarted = false;
-    [UdonSynced] public String defaultItPlayer = null;
-    
-    void Update()
+    /// <summary>
+    /// ゲームが開始した時
+    /// </summary>
+    public void GameStart()
     {
-        foreach (var a in PlayersInTrigger)
-        {
-            debugtext.text = a.displayName + "\nLength:" + PlayersInTrigger.Length;
-        }
-    }
-
-    void StartGame()
-    {
-        isStarted = true;
-        defaultItPlayer = Networking.LocalPlayer.displayName;
+        _killerSelect.SelectKillers();
     }
 }
