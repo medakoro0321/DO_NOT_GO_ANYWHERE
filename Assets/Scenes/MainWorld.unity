@@ -411,6 +411,37 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 103211420}
+--- !u!1 &198125298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 198125299}
+  m_Layer: 0
+  m_Name: KillerTpRoom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &198125299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198125298}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -27.21, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1137820887}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &331359470
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,6 +1010,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 198125299}
   - {fileID: 1507567564}
   - {fileID: 1262272667}
   m_Father: {fileID: 0}
@@ -1081,7 +1113,7 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 1137820890}
   killerCount: 1
   showDebugLogs: 1
-  killerTpTransform: {fileID: 0}
+  killerTpTransform: {fileID: 198125299}
 --- !u!1 &1248746183
 GameObject:
   m_ObjectHideFlags: 0
@@ -2127,13 +2159,18 @@ MonoBehaviour:
   RenderReflectionIntensity: 0
   RenderSkybox: {fileID: 0}
   NetworkIDs:
-  - gameObject: {fileID: 3480278762663670689}
-    ID: 16
+  - gameObject: {fileID: 1248746183}
+    ID: 10
     SerializedTypeNames:
     - VRC.Udon.UdonBehaviour
     - VRC.Udon.UdonBehaviour
-  - gameObject: {fileID: 378874293}
-    ID: 18
+  - gameObject: {fileID: 1137820886}
+    ID: 11
+    SerializedTypeNames:
+    - VRC.Udon.UdonBehaviour
+    - VRC.Udon.UdonBehaviour
+  - gameObject: {fileID: 1262272666}
+    ID: 12
     SerializedTypeNames:
     - VRC.Udon.UdonBehaviour
   - gameObject: {fileID: 103211399}
@@ -2143,16 +2180,12 @@ MonoBehaviour:
     - VRC.SDK3.Components.VRCObjectSync
     - VRC.SDK3.Components.VRCPickup
     - VRC.Udon.UdonBehaviour
-  - gameObject: {fileID: 1137820886}
-    ID: 19
+  - gameObject: {fileID: 378874293}
+    ID: 14
     SerializedTypeNames:
     - VRC.Udon.UdonBehaviour
-  - gameObject: {fileID: 1262272666}
-    ID: 20
-    SerializedTypeNames:
-    - VRC.Udon.UdonBehaviour
-  - gameObject: {fileID: 1248746183}
-    ID: 21
+  - gameObject: {fileID: 3480278762663670689}
+    ID: 15
     SerializedTypeNames:
     - VRC.Udon.UdonBehaviour
     - VRC.Udon.UdonBehaviour

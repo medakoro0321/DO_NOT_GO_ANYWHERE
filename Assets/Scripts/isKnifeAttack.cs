@@ -5,7 +5,7 @@ using VRC.Udon;
 using System;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Serialization;
+using IConnectComponent;
 
 public class isKnifeAttack : UdonSharpBehaviour
 {
@@ -26,6 +26,7 @@ public class isKnifeAttack : UdonSharpBehaviour
         var playerAPI = Networking.LocalPlayer;
         text.text = "Local Player: " + playerAPI.displayName;
         deadTextGUI.gameObject.SetActive(false);
+        _killerSelect = Components.GetComponent<KillerSelect>("GameSystem");
         
         if (_killerSelect == null) Debug.LogError("_KillerSelectがアタッチされていないかNULLが返されました!");
 
