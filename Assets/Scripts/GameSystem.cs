@@ -13,8 +13,8 @@ public class GameSystem : UdonSharpBehaviour
     private KillerSelect _killerSelect;
 
     private void Start()
-    {
-        _killerSelect = Components.GetComponent<KillerSelect>(this.gameObject);
+    {   
+        _killerSelect = GetComponentInChildren<KillerSelect>();
     }
     
     /// <summary>

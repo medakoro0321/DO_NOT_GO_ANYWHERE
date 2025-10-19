@@ -26,7 +26,7 @@ public class isKnifeAttack : UdonSharpBehaviour
         var playerAPI = Networking.LocalPlayer;
         text.text = "Local Player: " + playerAPI.displayName;
         deadTextGUI.gameObject.SetActive(false);
-        _killerSelect = Components.GetComponent<KillerSelect>("GameSystem");
+        _killerSelect = Components.GetComponent<KillerSelect>("TagZone");
         
         if (_killerSelect == null) Debug.LogError("_KillerSelectがアタッチされていないかNULLが返されました!");
 

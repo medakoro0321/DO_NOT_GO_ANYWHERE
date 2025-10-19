@@ -8,7 +8,7 @@ public class StartButton : UdonSharpBehaviour
 {
     private GameSystem _gameSystem;
 
-    void Start()
+    private void Start()
     {
         _gameSystem = GameObject.Find("GameSystem").GetComponent<GameSystem>();
     }
