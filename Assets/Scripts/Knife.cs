@@ -18,7 +18,7 @@ public class Knife : UdonSharpBehaviour
         if (_transform.position.y < 0)
         {
             Debug.LogAssertion("Knife is fell down into void.");
-            _transform.position = new Vector3(0, 1, 0);
+            //_transform.position = new Vector3(0, 1, 0);
         }
     }
 }

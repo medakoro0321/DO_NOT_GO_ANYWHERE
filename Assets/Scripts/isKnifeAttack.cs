@@ -15,6 +15,7 @@ public class isKnifeAttack : UdonSharpBehaviour
     [Header("DebugTextGUI")] public TextMeshProUGUI text;
     
     [Header("RespawnPointTransform")] public Transform respawnPoint;
+    private GameSystem _gameSystem;
     
     private int _detectedPlayerCollider = 0;
     private KillerSelect _killerSelect;
@@ -27,6 +28,7 @@ public class isKnifeAttack : UdonSharpBehaviour
         text.text = "Local Player: " + playerAPI.displayName;
         deadTextGUI.gameObject.SetActive(false);
         _killerSelect = Components.GetComponent<KillerSelect>("TagZone");
+        _gameSystem = Components.GetComponent<GameSystem>("GameSystem");
         
         if (_killerSelect == null) Debug.LogError("_KillerSelectがアタッチされていないかNULLが返されました!");
 
@@ -48,10 +50,12 @@ public class isKnifeAttack : UdonSharpBehaviour
     /// </summary>
     private void OnPlayerCollision(VRCPlayerApi player)
     {
+        // ゲーム開始前の表示を防止
+        if (!_gameSystem.isReady) return;
+        
         // プレイヤーが存在しないもしくは殺人鬼側だった場合、処理を停止
         if (player == null || _killerSelect.IsKiller(player)) return;
         
-        //プレイヤーのテレポート
         player.TeleportTo(
             respawnPoint.position,
             player.GetRotation()

@@ -16,6 +16,6 @@ public class StartButton : UdonSharpBehaviour
     public override void Interact()
     {
         Debug.Log("<color=red>Interacted</color>");
-        _gameSystem.GameStart();
+        _gameSystem.ReadyGame();
     }
 }

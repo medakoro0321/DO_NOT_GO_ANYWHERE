@@ -1,6 +1,7 @@
-﻿using System;
+﻿using TMPro;
 using UdonSharp;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using VRC.SDKBase;
 using Random = UnityEngine.Random;
 
@@ -8,9 +9,10 @@ public class KillerSelect : UdonSharpBehaviour
 {
     [Header("設定")]
     [Tooltip("殺人鬼の人数")]
-    public int killerCount = 1;
+    public int killerCount = 2;
     [Header("デバッグ")]
     public bool showDebugLogs = true;
+    public TextMeshProUGUI whoKiller;
     
     // トリガー内のプレイヤーリスト（配列で管理）
     private VRCPlayerApi[] _playersInTrigger = new VRCPlayerApi[0];
@@ -242,7 +244,9 @@ public class KillerSelect : UdonSharpBehaviour
     /// </summary>
     private void NotifyPlayers()
     {
+        var localPlayer = Networking.LocalPlayer;
         // TODO: 通知を送信
+        whoKiller.text = IsKiller(localPlayer).ToString();
     }
     
     /// <summary>
