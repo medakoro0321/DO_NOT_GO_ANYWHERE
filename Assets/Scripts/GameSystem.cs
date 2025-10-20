@@ -6,11 +6,13 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 using IConnectComponent;
+using CustomDisplayText;
 
 public class GameSystem : UdonSharpBehaviour
 {
     public bool isReady = false;
-    public bool isAutoStart = true;   
+    public bool isAutoStart = true;
+    private TextMeshProUGUI _textTyperGUI;
     
     // 外部スクリプトを読み込み
     private KillerSelect _killerSelect;
@@ -18,6 +20,8 @@ public class GameSystem : UdonSharpBehaviour
     private void Start()
     {   
         _killerSelect = GetComponentInChildren<KillerSelect>();
+        _textTyperGUI = Components.GetComponent<TextMeshProUGUI>("TextTyperGUI");
+        CustomDisplayText.Text text = new Text();
     }
     
     /// <summary>
@@ -25,9 +29,13 @@ public class GameSystem : UdonSharpBehaviour
     /// </summary>
     public void ReadyGame()
     {
-        // init
+        // TODO : ここ実装
+        //debug
+        Text.TextTyper(_textTyperGUI,"YOU RUN AWAY NOW!!!!!");
+        
         _killerSelect.SelectKillers();
         isReady = true;
+        // ゲーム自動開始
         if (isAutoStart) StartGame(); 
         else Debug.Log("Waiting for game to start");
     }
@@ -37,6 +45,6 @@ public class GameSystem : UdonSharpBehaviour
     /// </summary>
     public void StartGame()
     {
-        // 
+        Text.TextTyper(_textTyperGUI,"YOU RUN AWAY NOW!!!!!");
     }
 }
