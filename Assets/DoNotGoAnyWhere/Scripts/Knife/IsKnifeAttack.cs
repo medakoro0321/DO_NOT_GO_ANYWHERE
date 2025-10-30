@@ -10,21 +10,17 @@ namespace DoNotGoAnyWhere.Knife
     public class IsKnifeAttack : UdonSharpBehaviour
     {
         [Header("GUI")]
-        // debug
-        public TextMeshProUGUI deadTextGUI;
-
+        public TextMeshProUGUI deadTextGUI; // debug
         [Header("DebugTextGUI")] public TextMeshProUGUI text;
-
         [Header("RespawnPointTransform")] public Transform respawnPoint;
         private GameSystem _gameSystem;
-
         private int _detectedPlayerCollider;
         private KillerSelect _killerSelect;
 
 
         private void Start()
         {
-            _detectedPlayerCollider = 0;
+            _detectedPlayerCollider = 0; // 初期化
             var playerAPI = Networking.LocalPlayer;
             text.text = "Local Player: " + playerAPI.displayName;
             deadTextGUI.gameObject.SetActive(false);

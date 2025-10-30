@@ -4,7 +4,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using Random = UnityEngine.Random;
 
-namespace DoNotGoAnyWhere
+namespace DoNotGoAnyWhere.Systems
 {
     public class KillerSelect : UdonSharpBehaviour
     {
