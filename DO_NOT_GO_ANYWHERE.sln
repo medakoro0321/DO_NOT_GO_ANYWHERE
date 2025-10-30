@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRC.ClientSim", "VRC.Client
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRC.Udon.Serialization.OdinSerializer", "VRC.Udon.Serialization.OdinSerializer.csproj", "{f0fdb353-f7f5-ee3a-2d60-3f41043a66c5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{f55cb101-abcc-31f0-e3dc-18bc3dcf80f5}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UdonSharp.Editor", "UdonSharp.Editor.csproj", "{ffc40437-7821-e3f9-a1d9-23ad2b1a7e23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRC.Udon.Editor", "VRC.Udon.Editor.csproj", "{dc8a7175-5e9a-40c4-cb17-344b004af916}"
@@ -33,8 +35,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRWorldToolkit.Editor", "VR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRC.ExampleCentral.Editor", "VRC.ExampleCentral.Editor.csproj", "{47be26e9-7b20-8b91-31ac-3a83cf8d98c1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{f55cb101-abcc-31f0-e3dc-18bc3dcf80f5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.vrchat.core.vpm-resolver.Editor", "com.vrchat.core.vpm-resolver.Editor.csproj", "{2110b6fd-e381-ad16-565d-3fe25620b63f}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRC.SDKBase.Editor.ShaderStripping", "VRC.SDKBase.Editor.ShaderStripping.csproj", "{56a54785-efc1-5f89-334a-13c7d61952e7}"
@@ -62,6 +62,8 @@ Global
 		{0faedba6-e21f-bd6c-911b-2ebf550c321c}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{f0fdb353-f7f5-ee3a-2d60-3f41043a66c5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{f0fdb353-f7f5-ee3a-2d60-3f41043a66c5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{f55cb101-abcc-31f0-e3dc-18bc3dcf80f5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{f55cb101-abcc-31f0-e3dc-18bc3dcf80f5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ffc40437-7821-e3f9-a1d9-23ad2b1a7e23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ffc40437-7821-e3f9-a1d9-23ad2b1a7e23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{dc8a7175-5e9a-40c4-cb17-344b004af916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -90,8 +92,6 @@ Global
 		{c2541429-1611-5f44-ed64-8145d073783d}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47be26e9-7b20-8b91-31ac-3a83cf8d98c1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{47be26e9-7b20-8b91-31ac-3a83cf8d98c1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{f55cb101-abcc-31f0-e3dc-18bc3dcf80f5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{f55cb101-abcc-31f0-e3dc-18bc3dcf80f5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2110b6fd-e381-ad16-565d-3fe25620b63f}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2110b6fd-e381-ad16-565d-3fe25620b63f}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56a54785-efc1-5f89-334a-13c7d61952e7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
