@@ -1,27 +1,21 @@
-﻿using System;
-using System.Linq;
-using TMPro;
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine;
-using VRC.SDKBase;
-using VRC.Udon;
-using IConnectComponent;
-using CustomDisplayText;
 
 public class GameSystem : UdonSharpBehaviour
 {
     public bool isReady = false;
     public bool isAutoStart = true;
-    private TextMeshProUGUI _textTyperGUI;
     
     // 外部スクリプトを読み込み
     private KillerSelect _killerSelect;
+    private TextTyper _textTyper;
     
     private void Start()
     {   
         _killerSelect = GetComponentInChildren<KillerSelect>();
-        _textTyperGUI = Components.GetComponent<TextMeshProUGUI>("TextTyperGUI");
-        CustomDisplayText.Text text = new Text();
+        
+        // TextTyperコンポーネントを取得
+        _textTyper = GetComponent<TextTyper>();
     }
     
     /// <summary>
@@ -29,12 +23,12 @@ public class GameSystem : UdonSharpBehaviour
     /// </summary>
     public void ReadyGame()
     {
-        // TODO : ここ実装
-        //debug
-        Text.TextTyper(_textTyperGUI,"YOU RUN AWAY NOW!!!!!");
+        // インスタンスメソッドとして呼び出す
+        _textTyper.Play("YOU RUN AWAY NOW!!!!!",2f);
         
         _killerSelect.SelectKillers();
         isReady = true;
+        
         // ゲーム自動開始
         if (isAutoStart) StartGame(); 
         else Debug.Log("Waiting for game to start");
@@ -43,8 +37,8 @@ public class GameSystem : UdonSharpBehaviour
     /// <summary>
     /// ゲーム開始
     /// </summary>
-    public void StartGame()
+    private void StartGame()
     {
-        Text.TextTyper(_textTyperGUI,"YOU RUN AWAY NOW!!!!!");
+        _textTyper.Play("YOU RUN AWAY NOW!!!!!",2f);
     }
 }

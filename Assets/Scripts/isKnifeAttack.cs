@@ -1,13 +1,9 @@
 ﻿using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
-using VRC.Udon;
-using System;
-using UnityEngine.UI;
 using TMPro;
-using IConnectComponent;
 
-public class isKnifeAttack : UdonSharpBehaviour
+public class IsKnifeAttack : UdonSharpBehaviour
 {
     [Header("GUI")]
     // debug
@@ -17,7 +13,7 @@ public class isKnifeAttack : UdonSharpBehaviour
     [Header("RespawnPointTransform")] public Transform respawnPoint;
     private GameSystem _gameSystem;
     
-    private int _detectedPlayerCollider = 0;
+    private int _detectedPlayerCollider;
     private KillerSelect _killerSelect;
     
 

@@ -1,7 +1,6 @@
 ﻿using TMPro;
 using UdonSharp;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 using VRC.SDKBase;
 using Random = UnityEngine.Random;
 

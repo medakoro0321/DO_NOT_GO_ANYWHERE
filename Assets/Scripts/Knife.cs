@@ -8,7 +8,7 @@ public class Knife : UdonSharpBehaviour
 {
     private Transform _transform;
 
-    void Update()
+    private void Update()
     {
         if (!_transform)
         {

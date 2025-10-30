@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RemoveCanvasCollider : UdonSharpBehaviour
 {
-    private bool colliderRemoved = false;
+    private bool _colliderRemoved = false;
 
     void Start()
     {
@@ -13,7 +13,7 @@ public class RemoveCanvasCollider : UdonSharpBehaviour
     void Update()
     {
         // 何度でも削除を試みる
-        if (!colliderRemoved)
+        if (!_colliderRemoved)
         {
             RemoveCollider();
         }
@@ -29,7 +29,7 @@ public class RemoveCanvasCollider : UdonSharpBehaviour
         }
         else
         {
-            colliderRemoved = true;
+            _colliderRemoved = true;
         }
     }
 }
